@@ -60,34 +60,34 @@ function saveFiles(req, time = 0) {
 
         form.parse(req, function (err, fields, files) {
             if (err) {
-                reject('formidable, form.parse err', err.stack)
+                reject('formidable, form.parse err', err.stack);
             }
             // 存储图片的文件夹
-            const storePath = path.resolve(__dirname, '..', '..', FILE_FOLDER)
+            const storePath = path.resolve(__dirname, '..', '..', FILE_FOLDER);
             if (!fs.existsSync(storePath)) {
-                fs.mkdirSync(storePath)
+                fs.mkdirSync(storePath);
             }
 
-            console.log('fields......', fields)
+            console.log('fields......', fields);
 
             // 遍历所有上传来的图片
-            objForEach(files, (name, file) => {
-                console.log('name...', name)
-                console.log('file.name...', file.name)
+            objForEach(files['custom-fileName'], (name, file) => {
+                console.log('name...', name);
+                console.log('file.name...', file.name);
 
                 // 图片临时位置
-                const tempFilePath = file.path
+                const tempFilePath = file.path;
                 // 图片名称和路径
-                const fileName = genRandomFileName(file.name || name) // 为文件名增加一个随机数，防止同名文件覆盖
-                console.log('fileName...', fileName)
-                const fullFileName = path.join(storePath, fileName)
-                console.log('fullFileName...', fullFileName)
+                const fileName = genRandomFileName(file.name || name); // 为文件名增加一个随机数，防止同名文件覆盖
+                console.log('fileName...', fileName);
+                const fullFileName = path.join(storePath, fileName);
+                console.log('fullFileName...', fullFileName);
                 // 将临时文件保存为正式文件
-                fs.renameSync(tempFilePath, fullFileName)
+                fs.renameSync(tempFilePath, fullFileName);
                 // 存储链接
-                const url = `${PROTOCOL}://${IP}:${PORT}/${FILE_FOLDER}/${fileName}`
-                imgLinks.push({ url, alt: fileName, href: url })
-            })
+                const url = `${PROTOCOL}://${IP}:${PORT}/${FILE_FOLDER}/${fileName}`;
+                imgLinks.push({ url, alt: fileName, href: url });
+            });
             console.log('imgLinks...', imgLinks)
 
             // 返回结果
